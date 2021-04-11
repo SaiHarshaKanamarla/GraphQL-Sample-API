@@ -20,12 +20,26 @@ import { GraphQLServer } from 'graphql-yoga';
 // Scalar types in GraphQL - String, Boolean, ID, Float and Int
 const typeDefs = `
     type Query {
+        greeting(name: String, position: String): String!
+        me: User!
+        post: Post!
+        add(a: Float!, b: Float!) : Float!
+    }
+
+    type User {
         id: ID!
         name: String!
-        age: Int!
-        employed: Boolean!
-        gpa: Float!
+        age: Int
+        email: String!
     }
+
+    type Post{
+        id: ID!
+        title: String!
+        body: String!
+        published: Boolean!
+    }
+
 `
 
 
@@ -34,21 +48,38 @@ const typeDefs = `
 // We define one query for every method that we setup.
 const resolvers = {
     Query: {
-        id(){
-            return 'abc123'
+        me(){
+            return {
+                id: 'abs123',
+                name: 'Siddharth',
+                email: 'siddharth.landers@gmail.com',
+                age: 23
+            }
         },
-        name(){
-            return 'Harsha'
+
+        post(){
+            return {
+                id: 'abc123',
+                title: 'War of the worlds',
+                body: 'Book by Stephen Liotti',
+                published: true
+            }
         },
-        age(){
-            return 23
+
+        greeting(parent,args,ctx,info){
+            console.log(args)
+            if(args.name && args.position){
+                return 'Hello ' + args.name + '. You are my favorite '+ args.position;
+            }
+            return 'Hello';
+            
         },
-        employed(){
-            return true
-        },
-        gpa(){
-            return 3.8
+
+        add(parent,args,ctx,info){
+            console.log(args.a + " "+args.b)
+            return args.a + args.b
         }
+
     }
 }
 
