@@ -17,12 +17,14 @@ import { GraphQLServer } from 'graphql-yoga';
 // type definitions - (schema) - this defines the operation we can perform on the API and custom data types
 //graphQL code runs in the typeDefs - the schema
 // ! ensures that we always get that return type
+// Scalar types in GraphQL - String, Boolean, ID, Float and Int
 const typeDefs = `
     type Query {
-        hello: String! 
-        name : String!
-        location : String!
-        bio: String!
+        id: ID!
+        name: String!
+        age: Int!
+        employed: Boolean!
+        gpa: Float!
     }
 `
 
@@ -32,17 +34,20 @@ const typeDefs = `
 // We define one query for every method that we setup.
 const resolvers = {
     Query: {
-        hello() {
-            return 'This is my first query'
+        id(){
+            return 'abc123'
         },
         name(){
-            return 'My name is Harsha'
+            return 'Harsha'
         },
-        location(){
-            return 'Charlotte'
+        age(){
+            return 23
         },
-        bio(){
-            return 'Full Stack Developer'
+        employed(){
+            return true
+        },
+        gpa(){
+            return 3.8
         }
     }
 }
