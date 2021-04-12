@@ -14,6 +14,23 @@
 import { GraphQLServer } from 'graphql-yoga';
 
 
+//Demo user data
+const users = [{
+    id:'123',
+    name:'Harsha',
+    email: 'siddharth.landers@gmail.com',
+    age: 23
+},{
+    id:'12',
+    name:'Sidd',
+    email: 'siddharth.sidd@gmail.com',
+    age: 24
+},{
+    id:'3',
+    name:'Landers',
+    email: 'landers@gmail.com',
+}]
+
 // type definitions - (schema) - this defines the operation we can perform on the API and custom data types
 //graphQL code runs in the typeDefs - the schema
 // ! ensures that we always get that return type
@@ -22,8 +39,10 @@ const typeDefs = `
     type Query {
         greeting(name: String, position: String): String!
         me: User!
+        grades: [Int!]!
         post: Post!
-        add(a: Float!, b: Float!) : Float!
+        add(numbers: [Float!]!) : Float!
+        users: [User!]!
     }
 
     type User {
@@ -76,8 +95,20 @@ const resolvers = {
         },
 
         add(parent,args,ctx,info){
-            console.log(args.a + " "+args.b)
-            return args.a + args.b
+            if(args.numbers.length == 0){
+                return 0
+            }
+            console.log(args.numbers)
+            return args.numbers.reduce((accumulator,currentValue)=>{
+                return accumulator + currentValue
+            })
+
+        },
+        grades(parent,args,ctx,info){
+            return [99,80,93]
+        },
+        users(parent,args,ctx,info){
+            return users
         }
 
     }
